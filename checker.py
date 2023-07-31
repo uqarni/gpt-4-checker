@@ -4,7 +4,9 @@ import os
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 messages = [
-  {'role': 'user', 'content': 'tell me a one liner joke'}
+  {'role': 'user', 'content': 'tell me a 100 one liner jokes'}
 ]
 
-response = openai.ChatCompletion.create(model="gpt-4", messages=messages, max_tokens=600)
+for i in range(11):
+  response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=1000)
+  print(response)
