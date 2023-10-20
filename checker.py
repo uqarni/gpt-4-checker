@@ -1,12 +1,16 @@
 import openai
 import os
 
-openai.api_key = os.environ.get('OPENAI_API_KEY')
+message1 = {'role': 'system', 'content': 'tell a silly joke about bike-stealing thieves'}
+message2 = {'role': 'user', 'content': 'im so mad right now. my bike got stolen.'}
 
-messages = [
-  {'role': 'user', 'content': 'tell me a 100 one liner jokes'}
-]
+messages = [message1, message2]
 
-for i in range(11):
-  response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=1000)
-  print(response)
+response = openai.ChatCompletion.create(
+    messages = messages,
+    model = 'gpt-4',
+    max_tokens = 500,
+    user = 'testing_tokens'
+)
+
+print(response)
