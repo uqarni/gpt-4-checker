@@ -1,16 +1,52 @@
 import openai
-import os
+import time
 
-message1 = {'role': 'system', 'content': 'tell a silly joke about bike-stealing thieves'}
-message2 = {'role': 'user', 'content': 'im so mad right now. my bike got stolen.'}
+customer_api_key = "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"
+model = 'gpt-3.5-turbo'
 
-messages = [message1, message2]
+#outputs $ amount burned
+def token_burner(model):
+    #create messages list
+    message1 = {'role': 'system', 'content': 'list the entire alphabet 100 times'}
+    messages = [message1]
 
-response = openai.ChatCompletion.create(
-    messages = messages,
-    model = 'gpt-4',
-    max_tokens = 500,
-    user = 'testing_tokens'
-)
+    #define model
 
-print(response)
+    openai.api_key = customer_api_key
+    response = openai.ChatCompletion.create(
+        messages = messages,
+        model = model,
+        max_tokens = 3000,
+        user = 'testing_tokens'
+    )
+    #uncomment out content if you wanna hear some jokes
+    content = response["choices"][0]["message"]["content"]
+    prompt_tokens = response['usage']['prompt_tokens']
+    completion_tokens = response['usage']['completion_tokens']
+
+    if model == 'gpt-3.5-turbo':
+        dollars_burned = prompt_tokens*0.003/1000 + completion_tokens*0.004/1000
+        return dollars_burned
+    
+    if model == 'gpt-4':
+        return content
+
+#define amount to burn
+dollars_to_burn = .02 #USD
+total_dollars_burned = 0
+
+while total_dollars_burned <=dollars_to_burn:
+    print('...burning...')
+    burned = token_burner(model)
+    print('.....burned $', burned)
+    total_dollars_burned += burned
+    time.sleep(3)
+
+
+
+print(total_dollars_burned)
+
+
+
+
+
