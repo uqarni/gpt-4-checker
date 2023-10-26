@@ -1,10 +1,11 @@
 import openai
 import time
 
-customer_api_key = "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"
+openai.api_key = ""
 model = 'gpt-3.5-turbo'
+#model = 'gpt-4'
 
-#outputs $ amount burned
+
 def token_burner(model):
     #create messages list
     message1 = {'role': 'system', 'content': 'list the entire alphabet 100 times'}
@@ -12,7 +13,6 @@ def token_burner(model):
 
     #define model
 
-    openai.api_key = customer_api_key
     response = openai.ChatCompletion.create(
         messages = messages,
         model = model,
@@ -26,14 +26,16 @@ def token_burner(model):
 
     if model == 'gpt-3.5-turbo':
         dollars_burned = prompt_tokens*0.003/1000 + completion_tokens*0.004/1000
-        return dollars_burned
     
     if model == 'gpt-4':
-        return content
+        dollars_burned = prompt_tokens*0.06/1000 + completion_tokens*0.012/1000
 
-#define amount to burn
+    return dollars_burned
+
+#define amount to burn.
 dollars_to_burn = .02 #USD
 total_dollars_burned = 0
+
 
 while total_dollars_burned <=dollars_to_burn:
     print('...burning...')
@@ -43,8 +45,7 @@ while total_dollars_burned <=dollars_to_burn:
     time.sleep(3)
 
 
-
-print(total_dollars_burned)
+print('Total $ Burned: $', total_dollars_burned)
 
 
 
