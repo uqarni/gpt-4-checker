@@ -1,7 +1,10 @@
-import openai
+from openai import OpenAI
 import time
 
-openai.api_key = ""
+api_key = ""
+openai = OpenAI(api_key = api_key)
+
+
 model = 'gpt-3.5-turbo'
 #model = 'gpt-4'
 
@@ -13,16 +16,16 @@ def token_burner(model):
 
     #define model
 
-    response = openai.ChatCompletion.create(
+    response = openai.chat.completions.create(
         messages = messages,
         model = model,
         max_tokens = 3000,
         user = 'testing_tokens'
     )
     #uncomment out content if you wanna hear some jokes
-    content = response["choices"][0]["message"]["content"]
-    prompt_tokens = response['usage']['prompt_tokens']
-    completion_tokens = response['usage']['completion_tokens']
+    content = response.choices[0].message
+    prompt_tokens = response.usage['prompt_tokens']
+    completion_tokens = response.usage['completion_tokens']
 
     if model == 'gpt-3.5-turbo':
         dollars_burned = prompt_tokens*0.003/1000 + completion_tokens*0.004/1000
@@ -33,7 +36,7 @@ def token_burner(model):
     return dollars_burned
 
 #define amount to burn.
-dollars_to_burn = .02 #USD
+dollars_to_burn = .0000001 #USD
 total_dollars_burned = 0
 
 
